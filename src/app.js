@@ -1,22 +1,26 @@
-const express = require('express')
-const app = express();
-const notes = [];
-app.use(express.json())
-app.post('/notes',(req,res) => {
-    notes.push(req.body);
-    res.status(201).json({message:"Note Saved Successfully"})
-    
-})
-app.get('/notes',(req,res) => {
-    res.status(200).json({
-        message :'Notes Fetched Successfully',
-        notes : notes
-    })
-})
-app.delete('/notes/:index',(req,res) => {
-    const index = req.params.index;
-    delete notes[ index ];
-    res.status(200).json({message:'Deleted Successfully!'});
+const express = require('express');
+let app = express();
+app.use(express.json());
+const noteModel = require('./models/note.model')
 
+// POST /notes => Create a note
+// GET /notes => Get all notes
+// DELETE /notes/:id => Delete a note
+// PATCH /notes/:id => Update a note
+
+app.post("/notes" , async (req,res) => {
+    const data = req.body;
+    await noteModel.create({
+        title : data.title,
+        description : data.description
+    })
+    res.status(201).json({message:'Data Saved Successfully'})
 })
-module.exports  = app;
+app.get("/notes", async (req,res) => {
+    const notes = await noteModel.find({
+        title:'AbdulRehman'
+    });
+    res.status(200).json({messgage:'Notes Fetched Successfull!!',notes:notes});
+})
+
+module.exports = app 
