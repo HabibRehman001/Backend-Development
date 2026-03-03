@@ -1,0 +1,277 @@
+🚀 Complete Backend (Node.js + Express + MongoDB)
+📌 Overview
+
+This project covers backend development fundamentals using:
+
+Node.js
+
+Express.js
+
+REST APIs
+
+MongoDB
+
+Mongoose
+
+Postman (API testing)
+
+It explains how to create a server, build APIs, connect a database, and store data permanently.
+
+🖥️ What is Backend?
+
+Backend is responsible for:
+
+Handling server logic
+
+Managing database
+
+Creating APIs
+
+Processing client requests
+
+Sending responses
+
+🔁 Request–Response Cycle
+Client → Request → Server → Database → Server → Response → Client
+
+Frontend sends request → Backend processes it → Database stores/fetches data → Backend sends response.
+
+🌐 What is a Server?
+
+A server is a program that listens for client requests and sends responses.
+
+Example:
+
+Browser sends request to localhost:3000
+
+Server responds with data
+
+🟢 Node.js
+
+Node.js is a JavaScript runtime that allows us to run JavaScript outside the browser.
+
+Why Node.js?
+
+Fast (V8 engine)
+
+Non-blocking (asynchronous)
+
+Good for APIs
+
+Uses JavaScript everywhere
+
+Check Installation
+node -v
+npm -v
+📦 NPM (Node Package Manager)
+
+NPM is used to manage packages (libraries).
+
+Initialize Project
+npm init -y
+
+This creates:
+
+package.json
+Install Dependencies
+npm install express
+Install Development Dependency
+npm install nodemon --save-dev
+📁 Basic Folder Structure
+project/
+│
+├── node_modules/
+├── package.json
+├── server.js
+├── app.js
+
+server.js → Starts server
+
+app.js → Routes & logic
+
+node_modules → Installed packages
+
+⚡ Express.js
+
+Express is a minimal framework built on Node.js that simplifies backend development.
+
+Basic Server Setup
+const express = require("express");
+const app = express();
+
+app.listen(3000, () => {
+  console.log("Server running on port 3000");
+});
+
+Visit:
+
+http://localhost:3000
+🔀 Routing
+
+Routes define how server responds to requests.
+
+Example Route
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+🌍 HTTP Methods
+Method	Purpose
+GET	Get data
+POST	Create data
+PUT	Update data (full)
+PATCH	Update data (partial)
+DELETE	Delete data
+🔌 REST API Principles
+
+Use proper HTTP methods
+
+Use meaningful route names
+
+Send JSON data
+
+Keep APIs stateless
+
+Example:
+
+GET     /notes
+POST    /notes
+DELETE  /notes/:id
+📝 Notes API (Without Database)
+
+Initially, data is stored in memory using an array.
+
+const notes = [];
+Middleware to Parse JSON
+app.use(express.json());
+Create Note
+app.post("/notes", (req, res) => {
+  const note = req.body;
+  notes.push(note);
+  res.json(note);
+});
+Get Notes
+app.get("/notes", (req, res) => {
+  res.json(notes);
+});
+
+⚠ Problem: Data disappears when server restarts.
+
+🗄️ Database
+
+A database stores data permanently.
+
+Two types:
+
+SQL (MySQL, PostgreSQL)
+
+NoSQL (MongoDB)
+
+This project uses MongoDB (NoSQL).
+
+🍃 MongoDB
+
+MongoDB stores data in:
+
+Database
+
+Collections
+
+Documents (JSON-like format)
+
+Structure:
+
+Database
+ └── Collection
+       └── Documents
+☁ MongoDB Atlas
+
+MongoDB Atlas is a cloud-based MongoDB service.
+
+Steps:
+
+Create account
+
+Create cluster
+
+Get connection string
+
+Connect to backend
+
+Example Connection String:
+
+mongodb+srv://username:password@cluster.mongodb.net/dbname
+🔗 Connecting MongoDB with Mongoose
+Install Mongoose
+npm install mongoose
+Connect to Database
+const mongoose = require("mongoose");
+
+mongoose.connect("your_connection_string")
+  .then(() => console.log("Database Connected"))
+  .catch(err => console.log(err));
+🧩 Schema
+
+Schema defines the structure of data.
+
+const mongoose = require("mongoose");
+
+const noteSchema = new mongoose.Schema({
+  title: String,
+  description: String
+});
+🏗 Model
+
+Model connects schema with MongoDB collection.
+
+const Note = mongoose.model("Note", noteSchema);
+📝 Notes API (With Database)
+Create Note
+app.post("/notes", async (req, res) => {
+  const note = await Note.create(req.body);
+  res.json(note);
+});
+Get Notes
+app.get("/notes", async (req, res) => {
+  const notes = await Note.find();
+  res.json(notes);
+});
+
+Now data is stored permanently in MongoDB.
+
+🔄 Final Backend Flow
+Frontend
+   ↓
+API Request
+   ↓
+Express Server
+   ↓
+MongoDB Database
+   ↓
+Response to Client
+🎯 Concepts Covered
+
+Server & Request-Response
+
+Node.js
+
+NPM & Packages
+
+Express.js
+
+Routing
+
+REST APIs
+
+JSON Middleware
+
+Postman Testing
+
+MongoDB Basics
+
+MongoDB Atlas
+
+Mongoose
+
+Schema & Model
+
+Database Integration
